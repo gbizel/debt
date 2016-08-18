@@ -1,5 +1,11 @@
 ## Etude de l'explosion de l'endettement
 
+## Attention :: les salaires sont probablement FAUX. Données copiées
+## --> se focaliser sur les assets
+
+library("Hmisc")
+library("dplyr")
+library("ggplot2")
 
 # Debt setup
 
@@ -65,13 +71,63 @@ d.borrow.assets.median <-
   group_by(date) %>%
   summarize( median = median(ratio, na.rm = T))
 
+d.borrow.assets.mean <-
+  d.borrow.assets %>%
+  group_by(date) %>%
+  summarize( mean = mean(ratio, na.rm = T))
+
+## FINAL GRAPH
+## TO EXPLAIN. ###########
+
 d.borrow.assets %>%
+#  filter(date == "2004") %>%
   ggplot( aes(x = ratio, fill = date) ) +
   geom_density(alpha = .5, position = "identity", adjust = 2) +
   coord_cartesian(xlim = c(0, 10)) +
   geom_vline(data=d.borrow.assets.median, aes(xintercept=median,  colour=date),
+#  geom_vline(data=d.borrow.assets.mean, aes(xintercept=mean,  colour=date),
+               linetype="dashed", size=1)
+
+## PREMIER DECILE
+
+quantile( ( d.borrow.assets %>% filter(date == "2004") )$assets.value,
+          prob = seq(0, 1, length = 11))
+
+quantile( ( d.borrow.assets %>% filter(date == "2014") )$assets.value,
+          prob = seq(0, 1, length = 11))
+
+
+d.borrow.first.decile <-
+  rbind(d.borrow.assets %>%
+        filter( date == 2004, assets.value < 4500  ),
+      d.borrow.assets %>%
+        filter( date == 2014, assets.value < 19000  ))
+
+d.borrow.first.decile %>%
+  filter(date == "2014") %>%
+  ggplot( aes(x = ratio, fill = date) ) +
+  geom_density(alpha = .5, position = "identity", adjust = 2) +
+#  coord_cartesian(xlim = c(0, 10)) +
+  geom_vline(data=d.borrow.assets.median, aes(xintercept=median,  colour=date),
+             #  geom_vline(data=d.borrow.assets.mean, aes(xintercept=mean,  colour=date),
              linetype="dashed", size=1)
 
+## pic de densité en 2004 pour 3
+## en 2014 pour 50!!
+## tout ce qu'ils consomment
+
+## try differently : follow the first decile.
+
+d.borrow.assets %>%
+  filter( id.interview %in% (d.borrow.assets %>%
+                               filter( date == 2004, assets.value < 4500  ))$id.interview )
+
+
+which(d.borrow.assets$id.interview %in% (d.borrow.assets %>%
+                     filter( date == 2004, assets.value < 4500  ))$id.interview)
+
+
+## SUITE AVEC PRECAUTION... NON EXPLOITABLE
 # comparaison aux salaires -----
 
 # a faire plus tard:additionner tout ?
