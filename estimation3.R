@@ -1,5 +1,6 @@
 ## Estimation des remboursements mensuels des ménages
 
+
 library("Hmisc")
 library("dplyr")
 library("ggplot2")
@@ -149,6 +150,7 @@ qplot(
   colour = freq ) + 
   geom_smooth(method = lm)
 
+names(r.main)
 
 r.main <-
   r.main %>%
@@ -375,3 +377,81 @@ r.main %>%
 100*summary(as.factor(unlist((r.main %>%
                     filter( X6.1.K.Loan.settled == 1) %>%
                     select(X6.2.AB.Frequency)))))/160
+
+
+### SCORING ------------------ ######
+
+
+# Table des Source/Freq
+
+names(r.main)
+names(r.loan)
+
+100*summary(as.factor(r.main$X6.2.AB.Frequency))/nrow(r.main)
+
+100*summary(as.factor(r.loan$X6.1.C.From))/nrow(r.loan)
+
+
+
+i.calculable <- which(r.main$X6.2.AB.Frequency %in% c(1,2))
+i.f1 <- which(r.main$X6.2.AB.Frequency == 1)
+i.f2 <- which(r.main$X6.2.AB.Frequency == 2) 
+i.f5 <- which(r.main$X6.2.AB.Frequency == 5)
+
+from <- as.factor(r.main$X6.2.B.From[i.calculable])
+freq <- as.factor(r.main$X6.2.AB.Frequency[i.calculable])
+levels(freq) = c("weekly","monthly","yearly","6months")
+
+qplot(
+  r.main$days[i.calculable],
+  estimation[i.calculable],
+  colour = freq ) + 
+  geom_smooth(method = lm)
+
+
+# Visualiser les regressions freq(1,2) VS from
+r.main %>%
+  filter(X6.2.AB.Frequency %in% c(1,2),
+         X6.2.B.From == 8) %>%
+  ggplot(aes(x = as.double(days), y = as.double(estimation.reg), color = as.factor(X6.2.AB.Frequency))) +
+  geom_point() +
+  geom_smooth( method = lm )
+
+
+
+
+r.main$estimation.reg <-
+  as.double( r.main$X6.2.AD.Principal.Amount.Repaid
+             + r.main$days*(r.main$day.interest) ) /
+  as.double(r.main$X6.1.I.Amount.of.loan)
+
+## Attention : r.temp n'a de sens que pour freq 1,2.
+
+r.temp <-
+  r.main %>%
+  filter(X6.2.AB.Frequency == 1,
+         X6.2.B.From == 10)
+
+nrow(r.temp)
+
+summary(lm( r.temp$monthly_payment ~ r.temp$X6.1.I.Amount.of.loan ))
+summary(lm( r.temp$monthly_payment ~ r.temp$X6.1.I.Amount.of.loan ))$coeff[2,1]
+
+
+
+# fq,fm
+# 1,1 : 0.05975971
+# 2,1 : 0.05334108 ref
+# 1,2 : 0.05963733
+# 2,2 : 0.04613038
+# 1,6 : no
+# 1,8 : 0.09627316
+# 1,10: no
+# 2,6 : no
+# 2,8 : 0.04813388 / 38 obs
+# 2,10: 0.1335655 / 17 obs
+
+
+0.09627316/0.05334108
+
+6/5.33
