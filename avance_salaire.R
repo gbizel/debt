@@ -13,7 +13,7 @@ v.avance$diff_balance <- v.avance$Balance.2014 - v.avance$Balance.2013
 names(v.avance)
 
 v.avance %>%
-  ggplot(aes(Balance.2013)) +
+  ggplot(aes(Balance.2014)) +
   geom_density( alpha = 0.5, adjust = 1)
 
 v.avance %>%
@@ -130,13 +130,13 @@ summary(d04.avance$Balance)
 
 dv.avance <-
   dv.avance %>%
-  mutate( salaire = (Advance + Balance)/Total.memb,
+  mutate( salaire.indiv = (Advance + Balance)/Total.memb,
           salaire.menage = (Advance + Balance))
 # attention: diviser par VRAIS tot.m
 
 
 dv.avance %>%
-  ggplot(aes(salaire, fill = year)) +
+  ggplot(aes(salaire.indiv, fill = year)) +
   geom_density( alpha = 0.5, adjust = 2)
 
 dv.avance %>%
@@ -155,3 +155,52 @@ summary( dv.avance %>% filter( year == 2014))
 
 100*length(which((d04.avance %>% filter(year == "2004"))$Balance < 0))/nrow(v.avance)
 # 38%
+
+v.avance %>%
+  filter(Balance.2014 <= 0) %>%
+  summarise(mean(Balance.2014), median(Balance.2014))
+# mean(Balance.2014) median(Balance.2014)
+# 1          -22693.91               -21000
+
+d04.avance %>%
+  filter(Balance <= 0,
+         year == "2004") %>%
+  summarise(mean(Balance), median(Balance))
+# mean(Balance) median(Balance)
+# 1     -674.0659            -500
+
+
+# Cercle vicieux ------
+
+
+inner_join(
+d04.avance %>%
+  filter(year == "2004",
+         Balance < 0) %>%
+  select(id.interview, Balance)
+,
+d04.avance %>%
+  filter(year == "2003",
+         Balance < 0) %>%
+  select(id.interview, Balance)
+,
+by = "id.interview")
+
+
+inner_join(
+  v.avance %>%
+    filter(Balance.2013 < 0) %>%
+    select(id.interview, Balance.2013)
+  ,
+  d04.avance %>%
+    filter(year == "2003",
+           Balance < 0) %>%
+    select(id.interview, Balance)
+  ,
+  by = "id.interview")
+
+v.avance %>%
+  filter(Balance.2013 < 0 & Balance.2014 < 0) %>%
+  select(id.interview, Balance.2013, Balance.2014)
+
+61/145
