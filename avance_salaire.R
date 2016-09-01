@@ -135,13 +135,30 @@ dv.avance <-
 # attention: diviser par VRAIS tot.m
 
 
+dv.avance.median.i <-
+  dv.avance %>%
+  group_by(year) %>%
+  summarize( median = median(salaire.indiv, na.rm = T))
+
+dv.avance.median.m <-
+  dv.avance %>%
+  group_by(year) %>%
+  summarize( median = median(salaire.menage, na.rm = T))
+
+
 dv.avance %>%
   ggplot(aes(salaire.indiv, fill = year)) +
-  geom_density( alpha = 0.5, adjust = 2)
+  geom_density( alpha = 0.5, adjust = 2) +
+  geom_vline(data=dv.avance.median.i, aes(xintercept=median,  colour=year),
+             linetype="dashed", size=1)
+
 
 dv.avance %>%
   ggplot(aes(salaire.menage, fill = year)) +
-  geom_density( alpha = 0.5, adjust = 2)
+  geom_density( alpha = 0.5, adjust = 2) +
+  geom_vline(data=dv.avance.median.m, aes(xintercept=median,  colour=year),
+             linetype="dashed", size=1)
+
 
 
 summary( dv.avance %>% filter( year == "2004 ajusté"))

@@ -89,6 +89,9 @@ d.j.household %>%
 
 names(d.household)
 
+d.j.household %>%
+  select(age.x,age.y,education.x,education.y) %>%
+  filter(education.x == 0 & education.y > 0)
 
 
 d.children %>%
@@ -104,9 +107,53 @@ d.children %>%
 names(r.family)
 
 summary(as.factor(r.family$X1.G.Education))/19.28
-
 100*summary(as.factor(d04.household$education))/(nrow(d04.household))
-
 
 6.2759336+2.8526971+3.2157676+0.6224066+0.9336100
 length(r.family$X1.G.Education)
+
+# Irrelevant
+r.family %>%
+  filter(X1.G.Education == 66) %>%
+  select(X1.E.Age)
+
+d04.household %>%
+  filter(age == 4) %>%
+  select(education)
+
+# Exportation ------
+
+edu.csv <-
+  r.family %>%
+  mutate(Code.member = X1.A.Code.id.member) %>%
+  select(X1.G.Education, X1.E.Age, X1.H.Student.at.present)
+
+write.csv2(edu.csv, dec = ";", file = "/Users/gaston/Desktop/ifp/r.edu.csv")
+
+
+names(d04.household)
+
+d.edu.csv <-
+  d04.household %>%
+  select(age, education)
+  
+write.csv2(d.edu.csv, dec = ";", file = "/Users/gaston/Desktop/ifp/d.edu.csv")
+
+
+# Ajout de la variable "irrelevant"
+
+summary(as.factor(r.family$X1.G.Education))
+
+rume$X_Education
+
+
+### Education parents -------
+
+names(d14.household)
+
+d04.household %>%
+  filter(age > 20) %>%
+  group_by(education) %>%
+  summarise(n())
+
+402/(402+178+42+26)
