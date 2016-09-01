@@ -104,17 +104,182 @@ d.borrow.first.decile <-
         filter( date == 2014, assets.value < 19000  ))
 
 d.borrow.first.decile %>%
-  filter(date == "2014") %>%
+  filter(date == "2004") %>%
   ggplot( aes(x = ratio, fill = date) ) +
-  geom_density(alpha = .5, position = "identity", adjust = 2) +
+  geom_density(alpha = .5, position = "identity", adjust = 2)
 #  coord_cartesian(xlim = c(0, 10)) +
-  geom_vline(data=d.borrow.assets.median, aes(xintercept=median,  colour=date),
-             #  geom_vline(data=d.borrow.assets.mean, aes(xintercept=mean,  colour=date),
-             linetype="dashed", size=1)
 
 ## pic de densité en 2004 pour 3
 ## en 2014 pour 50!!
 ## tout ce qu'ils consomment
+
+## Mediane par décile -------------
+
+q.asset.04 <-
+  quantile( ( d.borrow.assets %>% filter(date == "2004") )$assets.value,
+          prob = seq(0, 1, length = 11))
+
+q.asset.14 <-
+  quantile( ( d.borrow.assets %>% filter(date == "2014") )$assets.value,
+          prob = seq(0, 1, length = 11))
+
+# Dec1
+d.borrow.assets %>%
+  filter(date == 2004,
+         assets.value < q.asset.04[2]) %>%
+  summarise(median(ratio, na.rm = T))
+
+d.borrow.assets %>%
+  filter(date == 2014,
+         assets.value < q.asset.14[2]) %>%
+  summarise(median(ratio, na.rm = T))
+
+2.952381
+60.57955
+
+# Dec2
+d.borrow.assets %>%
+  filter(date == 2004,
+         assets.value < q.asset.04[3],
+         assets.value >= q.asset.04[2]) %>%
+  summarise(median(ratio, na.rm = T))
+
+d.borrow.assets %>%
+  filter(date == 2014,
+         assets.value < q.asset.14[3],
+         assets.value >= q.asset.04[2]) %>%
+  summarise(median(ratio, na.rm = T))
+
+1.663985
+10.80214
+
+# Dec3
+d.borrow.assets %>%
+  filter(date == 2004,
+         assets.value < q.asset.04[4],
+         assets.value >= q.asset.04[3]) %>%
+  summarise(median(ratio, na.rm = T))
+
+d.borrow.assets %>%
+  filter(date == 2014,
+         assets.value < q.asset.14[4],
+         assets.value >= q.asset.04[3]) %>%
+  summarise(median(ratio, na.rm = T))
+
+1.141111
+7.083333
+
+# Dec5
+d.borrow.assets %>%
+  filter(date == 2004,
+         assets.value < q.asset.04[5],
+         assets.value >= q.asset.04[4]) %>%
+  summarise(median(ratio, na.rm = T))
+
+d.borrow.assets %>%
+  filter(date == 2014,
+         assets.value < q.asset.14[5],
+         assets.value >= q.asset.04[4]) %>%
+  summarise(median(ratio, na.rm = T))
+
+0.36
+5.792952
+
+# Dec6
+d.borrow.assets %>%
+  filter(date == 2004,
+         assets.value < q.asset.04[6],
+         assets.value >= q.asset.04[5]) %>%
+  summarise(median(ratio, na.rm = T))
+
+d.borrow.assets %>%
+  filter(date == 2014,
+         assets.value < q.asset.14[6],
+         assets.value >= q.asset.04[5]) %>%
+  summarise(median(ratio, na.rm = T))
+
+0.3
+4.318182
+
+# Dec7
+d.borrow.assets %>%
+  filter(date == 2004,
+         assets.value < q.asset.04[7],
+         assets.value >= q.asset.04[6]) %>%
+  summarise(median(ratio, na.rm = T))
+
+d.borrow.assets %>%
+  filter(date == 2014,
+         assets.value < q.asset.14[7],
+         assets.value >= q.asset.04[6]) %>%
+  summarise(median(ratio, na.rm = T))
+
+0.2302632
+3.078947
+
+# Dec8
+d.borrow.assets %>%
+  filter(date == 2004,
+         assets.value < q.asset.04[8],
+         assets.value >= q.asset.04[7]) %>%
+  summarise(median(ratio, na.rm = T))
+
+d.borrow.assets %>%
+  filter(date == 2014,
+         assets.value < q.asset.14[8],
+         assets.value >= q.asset.04[7]) %>%
+  summarise(median(ratio, na.rm = T))
+
+0.2173913
+1.9189
+
+# Dec9
+d.borrow.assets %>%
+  filter(date == 2004,
+         assets.value < q.asset.04[9],
+         assets.value >= q.asset.04[8]) %>%
+  summarise(median(ratio, na.rm = T))
+
+d.borrow.assets %>%
+  filter(date == 2014,
+         assets.value < q.asset.14[9],
+         assets.value >= q.asset.04[8]) %>%
+  summarise(median(ratio, na.rm = T))
+
+0.5142857
+1.058659
+
+# Dec10
+d.borrow.assets %>%
+  filter(date == 2004,
+         assets.value < q.asset.04[10],
+         assets.value >= q.asset.04[9]) %>%
+  summarise(median(ratio, na.rm = T))
+
+d.borrow.assets %>%
+  filter(date == 2014,
+         assets.value < q.asset.14[10],
+         assets.value >= q.asset.04[9]) %>%
+  summarise(median(ratio, na.rm = T))
+
+0.3325877
+0.5862745
+
+# Dec10
+d.borrow.assets %>%
+  filter(date == 2004,
+         assets.value < q.asset.04[11],
+         assets.value >= q.asset.04[10]) %>%
+  summarise(median(ratio, na.rm = T))
+
+d.borrow.assets %>%
+  filter(date == 2014,
+         assets.value < q.asset.14[11],
+         assets.value >= q.asset.04[10]) %>%
+  summarise(median(ratio, na.rm = T))
+
+0.1916667
+0.3819444
 
 ## try differently : follow the first decile.
 
