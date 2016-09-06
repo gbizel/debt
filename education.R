@@ -157,3 +157,10 @@ d04.household %>%
   summarise(n())
 
 402/(402+178+42+26)
+
+d14.household %>%
+  filter(age > 20) %>%
+  group_by(education) %>%
+  summarise(n())
+
+455/(455+307+110+49)

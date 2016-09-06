@@ -80,6 +80,15 @@ d.borrow.assets.mean <-
 ## TO EXPLAIN. ###########
 
 d.borrow.assets %>%
+  group_by(date) %>%
+  summarise(max(ratio, na.rm = T))
+
+temp <-
+  d.borrow.assets %>%
+  arrange(desc(ratio)) %>%
+  filter(date == 2004)
+
+d.borrow.assets %>%
 #  filter(date == "2004") %>%
   ggplot( aes(x = ratio, fill = date) ) +
   geom_density(alpha = .5, position = "identity", adjust = 2) +
