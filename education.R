@@ -139,6 +139,13 @@ d.edu.csv <-
   
 write.csv2(d.edu.csv, dec = ";", file = "/Users/gaston/Desktop/ifp/d.edu.csv")
 
+#2014
+
+d14.edu.csv <-
+  d14.household %>%
+  select(age, education)
+
+write.csv2(d14.edu.csv, dec = ";", file = "/Users/gaston/Desktop/ifp/d14.edu.csv")
 
 # Ajout de la variable "irrelevant"
 
@@ -164,3 +171,23 @@ d14.household %>%
   summarise(n())
 
 455/(455+307+110+49)
+
+d04.household %>%
+  filter(age > 18) %>%
+  group_by(education) %>%
+  summarise(n())
+
+420/(420+205+49+33)
+
+d14.household %>%
+  filter(age > 18) %>%
+  group_by(education) %>%
+  summarise(n())
+
+456/(456+312+180+49)
+
+d04.household %>%
+  filter(age < 18) %>%
+  group_by(education) %>%
+  summarise(n())
+

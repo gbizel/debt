@@ -129,10 +129,20 @@ summary(d04.avance$Balance)
 ## Calcul d'un salaire ------
 
 dv.avance <-
-  dv.avance %>%
-  mutate( salaire.indiv = (Advance + Balance)/Total.memb,
-          salaire.menage = (Advance + Balance))
+  rbind(
+    dv.avance %>%
+      filter(year=="2004 ajusté") %>%
+      mutate( salaire.indiv = (Advance + Balance  + 800*34)/(Total.memb),
+              salaire.menage = (Advance + Balance)),
+    dv.avance %>%
+      filter(year=="2014") %>%
+      mutate( salaire.indiv = (Advance + Balance + 800*34)/(Total.memb + 1),
+              salaire.menage = (Advance + Balance))
+    )
+    
+    
 # attention: diviser par VRAIS tot.m
+
 
 
 dv.avance.median.i <-
