@@ -151,3 +151,57 @@ r.practices %>%
   group_by(from) %>%
   summarise(med = median(outstanding, na.rm = T),
             mean = mean(outstanding, na.rm = T))
+
+write.csv2(r.practices %>%
+             group_by(from) %>%
+             summarise(med = median(outstanding, na.rm = T),
+                       mean = mean(outstanding, na.rm = T)),
+           "/Users/gaston/Desktop/r_practices.csv")
+
+
+## Corrected from Venkat -----
+
+v.sources <-
+  read.csv2(file = "/Users/gaston/Desktop/ifp/source3A.csv", sep = ";")
+
+summary(v.sources)
+
+v.sources <-
+  v.sources %>%
+  filter(id.interview != 0) %>%
+  arrange(id.interview)
+
+summary(v.sources$from.code)
+
+v.sources %>%
+  group_by(from.code) %>%
+  summarise(med = median(outstanding, na.rm = T),
+            mean = mean(outstanding, na.rm = T),
+            n())
+
+
+
+## Exportation excel ---
+
+write.csv2(d14.practices %>%
+            group_by(lender) %>%
+            summarise(med = median(outstanding, na.rm = T),
+                      mean = mean(outstanding, na.rm = T)),
+          "/Users/gaston/Desktop/d14.csv",
+          sep = ";")
+
+write.csv2(d04.practices %>%
+            group_by(lender) %>%
+            summarise(med = median(outstanding, na.rm = T),
+                      mean = mean(outstanding, na.rm = T)),
+          "/Users/gaston/Desktop/d04.csv",
+          sep = ";")
+
+write.csv2(r.practices %>%
+             group_by(from) %>%
+             summarise(med = median(outstanding, na.rm = T),
+                       mean = mean(outstanding, na.rm = T)),
+           "/Users/gaston/Desktop/r_practices.csv",
+           sep = ";")
+
+
