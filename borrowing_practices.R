@@ -70,12 +70,14 @@ d14.practices %>%
 d04.practices %>%
   group_by(lender) %>%
   summarise(med = median(outstanding, na.rm = T),
-            mean = mean(outstanding, na.rm = T))
+            mean = mean(outstanding, na.rm = T),
+            n())
 
 d14.practices %>%
   group_by(lender) %>%
   summarise(med = median(outstanding, na.rm = T),
-            mean = mean(outstanding, na.rm = T))
+            mean = mean(outstanding, na.rm = T),
+            n())
 
 summary(d14.practices %>%
           filter(source.of.cash == 1) )
@@ -150,12 +152,14 @@ r.practices %>%
 r.practices %>%
   group_by(from) %>%
   summarise(med = median(outstanding, na.rm = T),
-            mean = mean(outstanding, na.rm = T))
+            mean = mean(outstanding, na.rm = T),
+            n())
 
 write.csv2(r.practices %>%
              group_by(from) %>%
              summarise(med = median(outstanding, na.rm = T),
-                       mean = mean(outstanding, na.rm = T)),
+                       mean = mean(outstanding, na.rm = T),
+                       n()),
            "/Users/gaston/Desktop/r_practices.csv")
 
 
@@ -179,6 +183,22 @@ v.sources %>%
             mean = mean(outstanding, na.rm = T),
             n())
 
+v.sources %>%
+summarise(med = median(outstanding, na.rm = T),
+            mean = mean(outstanding, na.rm = T),
+            n())
+
+write.csv2(v.sources %>%
+             group_by(from.code) %>%
+             summarise(med = median(outstanding, na.rm = T),
+                       mean = mean(outstanding, na.rm = T),
+                       n()),
+           "/Users/gaston/Desktop/v14.csv",
+           sep = ";")
+
+v.sources %>%
+  filter(from.code %in% c(3,"3A"))
+  summarise()
 
 
 ## Exportation excel ---

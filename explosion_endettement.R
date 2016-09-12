@@ -91,7 +91,7 @@ temp <-
 d.borrow.assets %>%
 #  filter(date == "2004") %>%
   ggplot( aes(x = ratio, fill = date) ) +
-  geom_density(alpha = .5, position = "identity", adjust = 2) +
+  geom_density(alpha = .5, position = "identity", adjust = 1) +
   coord_cartesian(xlim = c(0, 10)) +
   geom_vline(data=d.borrow.assets.median, aes(xintercept=median,  colour=date),
 #  geom_vline(data=d.borrow.assets.mean, aes(xintercept=mean,  colour=date),
