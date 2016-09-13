@@ -509,4 +509,18 @@ q_plot(0.0046789*r.main$days)
 ## faire une courbe (balance/amount) % days
 
 
-r.main$X6.1.J.Balance
+r.main$X6.1.J.Balance 
+r.main$X6.1.I.Amount.of.loan
+r.main$days
+
+qplot(r.main$days,as.double(r.main$X6.1.J.Balance) / as.double(r.main$X6.1.I.Amount.of.loan))
+
+## alledged balance? known duration?
+
+r.main$X6.2.Y.Time.to.repay
+
+r.main$time.repay
+
+r.main$balance.rel <- as.double(r.main$X6.1.J.Balance)/as.double(r.main$X6.1.I.Amount.of.loan)
+
+qplot(r.main$balance.rel, as.numeric(r.main$time.repay))
