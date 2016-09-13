@@ -131,6 +131,19 @@ est.principal <-
 q_plot(est.principal)
 
 
+## Graph monthly/weekly explication -------
+
+summary(lm( estimation[i.f1] ~ r.main$days[i.f1] ))
+summary(lm( estimation[i.f2] ~ r.main$days[i.f2] ))
+
+
+qplot(
+  r.main$days[i.calculable],
+  estimation[i.calculable],
+  colour = freq ) + 
+  geom_smooth(method = lm)
+
+
 ## Monthly estimation -------
 ## Restriction aux monthly/weekly
 
@@ -455,3 +468,45 @@ summary(lm( r.temp$monthly_payment ~ r.temp$X6.1.I.Amount.of.loan ))$coeff[2,1]
 0.09627316/0.05334108
 
 6/5.33
+
+## Weekly/monthly amelioration ---------
+
+# Graphe de base :
+
+qplot(
+  r.main$days[i.calculable],
+  estimation[i.calculable],
+  colour = freq ) + 
+  geom_smooth(method = lm)
+
+weekmon <-
+  rbind(
+    r.main %>%
+      filter(X6.2.AB.Frequency == "1") %>%
+      select(X6.2.AB.Frequency, X6.1.I.Amount.of.loan, days, estimation)
+    ,
+    r.main %>%
+      filter(X6.2.AB.Frequency == "2") %>%
+      select(X6.2.AB.Frequency, X6.1.I.Amount.of.loan, days, estimation)
+  ) 
+
+write.csv2(weekmon,
+           "/Users/gaston/Desktop/weekmon.csv")
+
+
+summary(lm( estimation[i.f1] ~ 0 + r.main$days[i.f1] ))
+
+summary(lm( estimation[i.f2] ~ 0 + r.main$days[i.f2] ))
+
+#monthly
+q_plot(0.001817*r.main$days)
+q_plot(0.0046789*r.main$days)
+
+0.0046789/0.001817
+
+## idée
+
+## faire une courbe (balance/amount) % days
+
+
+r.main$X6.1.J.Balance
