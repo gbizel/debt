@@ -518,9 +518,72 @@ qplot(r.main$days,as.double(r.main$X6.1.J.Balance) / as.double(r.main$X6.1.I.Amo
 ## alledged balance? known duration?
 
 r.main$X6.2.Y.Time.to.repay
+r.main$rep
 
 r.main$time.repay
 
 r.main$balance.rel <- as.double(r.main$X6.1.J.Balance)/as.double(r.main$X6.1.I.Amount.of.loan)
 
 qplot(r.main$balance.rel, as.numeric(r.main$time.repay))
+
+r.main$time.repay[i.f1]
+## ATTENTION : TIME REPAY INUTILE POUR PRET EN COURS
+
+## Duration ----
+
+levels(r.main$X6.2.W.Duration)
+
+r.main$duration <- r.main$X6.2.W.Duration
+
+levels(r.main$duration) <-
+  30*c(1,8,12,18,
+    10,14,15,15,
+    17,18,2,16,
+    .5,24,2,6,
+    24,28,3,4,
+    5,60,6,6,
+    7,.25,7,8,
+    NA,NA,NA,NA,
+    NA,NA,NA,NA,
+    NA,8,NA,NA,
+    NA,NA,NA,5)
+
+r.main$duration <-
+  as.numeric(levels(r.main$duration))[r.main$duration]
+
+q_plot(r.main$duration)
+
+
+summary(r.main$duration[i.f1])
+summary(r.main$duration[i.f2])
+
+r.main %>%
+  filter(duration == 60*30)
+
+35/50
+
+608/1800
+
+
+r.main$time.pct <-
+  r.main$days/r.main$duration
+
+q_plot(r.main$time.pct) +
+  coord_cartesian(ylim = c(0,10))
+
+length(which(r.main$time.pct > 1))/length(which(r.main$time.pct <= 1))
+
+356/740
+
+r.main %>%
+  select(duration,X6.2.W.Duration, days)
+
+summary(r.main$days - r.main$duration)
+
+r.main %>%
+  ggplot( aes(x=(days-duration)) ) +
+  geom_density(alpha = .5, adjust = 1) +
+  geom_vline(xintercept = 30*4) +
+  geom_vline(xintercept = -30*4)
+
+4*30

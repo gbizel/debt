@@ -64,8 +64,11 @@ dv.avance %>%
   ggplot(aes(Balance, fill = year)) +
   geom_density( alpha = 0.5, adjust = 2)
 
+dv.avance$salaire.indiv[dv.avance$salaire.indiv == Inf] <- NA
+
 summary( dv.avance %>% filter( year == 2014))
 summary( dv.avance %>% filter( year == "2004 ajusté"))
+
 
 # avance Pre Venkat COPIE ---------------
 
@@ -82,6 +85,10 @@ summary(d14.avance$Balance)
 summary(d04.avance$Total.memb)
 summary(d14.avance$Total.memb)
 
+summary(d04.avance.04$Total.memb)
+summary(d14.avance.14$Total.memb)
+
+2.367+0.94
 d04.avance %>%
   group_by(year) %>%
   summarise(mean(Total.memb))
@@ -230,4 +237,13 @@ v.avance %>%
   filter(Balance.2013 < 0 & Balance.2014 < 0) %>%
   select(id.interview, Balance.2013, Balance.2014)
 
+
 61/145
+
+-(21886-24078)/24078
+# augmentation de 9%
+
+
+
+
+
