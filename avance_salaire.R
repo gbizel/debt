@@ -106,9 +106,43 @@ d.avance <-
                               Balance = Balance*2.27),
         d14.avance %>% mutate(date = as.factor(2014)))
 
+# GRAPH FINAL AVANCE 14 04:::::::
+
+d.avance.median <-
+  d.avance %>%
+  group_by(date) %>%
+  summarize( median = median(Advance, na.rm = T))
+
 d.avance %>%
   ggplot(aes(Advance, fill = date)) +
-  geom_density( alpha = 0.5, adjust = 3)
+  geom_density( alpha = 0.5, adjust = 3) +
+  coord_cartesian(xlim = c(0,120000)) +
+  theme(axis.line = element_line(colour = "black"),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      panel.border = element_blank(),
+      panel.background = element_blank()) +
+  geom_vline(data=d.avance.median, aes(xintercept=median,  colour=date),
+             linetype="dashed", size=1)
+
+##::::::::::::::::
+
+## Stat pour Slide 2:
+
+# 2004: 90% in what
+quantile((d.avance %>% filter(date == "2004 ajusté"))$Advance, c(1:10)/10) 
+
+# 2014: 10% above what
+quantile((d.avance %>% filter(date == "2014"))$Advance, c(.10, .90))
+
+var((d.avance %>% filter(date == "2014"))$Advance)/var((d.avance %>% filter(date == "2004 ajusté"))$Advance)
+
+##::::::::::::::::
+
+d.avance %>%
+  filter(date == "2014") %>%
+  arrange(Advance) %>%
+  select(Advance)
 
 d.avance %>%
   ggplot(aes(Balance, fill = date)) +
@@ -150,7 +184,13 @@ dv.avance <-
     
 # attention: diviser par VRAIS tot.m
 
+#SLIDE VARIANCE:::::
+var((dv.avance %>% filter(year == 2014))$salaire.menage, na.rm = T)/var((dv.avance %>% filter(year == "2004 ajusté"))$salaire.menage, na.rm = T)
+length(which((dv.avance %>% filter(year == 2014))$salaire.menage > 0))
 
+median((dv.avance %>% filter(year == 2014))$salaire.menage, na.rm = T)
+median((dv.avance %>% filter(year == "2004 ajusté"))$salaire.menage, na.rm = T)
+59950/20430
 
 dv.avance.median.i <-
   dv.avance %>%
@@ -163,18 +203,31 @@ dv.avance.median.m <-
   summarize( median = median(salaire.menage, na.rm = T))
 
 
+# Salaire individuel:::::::::::::::
 dv.avance %>%
   ggplot(aes(salaire.indiv, fill = year)) +
   geom_density( alpha = 0.5, adjust = 2) +
   geom_vline(data=dv.avance.median.i, aes(xintercept=median,  colour=year),
-             linetype="dashed", size=1)
+             linetype="dashed", size=1)  +
+  coord_cartesian(xlim = c(0,76000)) +
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank())
+  
 
-
+## Salaire menage:::::::::::::::::
 dv.avance %>%
   ggplot(aes(salaire.menage, fill = year)) +
   geom_density( alpha = 0.5, adjust = 2) +
   geom_vline(data=dv.avance.median.m, aes(xintercept=median,  colour=year),
-             linetype="dashed", size=1)
+             linetype="dashed", size=1) +
+  theme(axis.line = element_line(colour = "black"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.border = element_blank(),
+        panel.background = element_blank())
 
 
 
@@ -245,5 +298,23 @@ v.avance %>%
 
 
 
+## SLIDE BALANCE2014:::::::::::::::::::: ----------
+
+  v.avance %>%
+    ggplot(aes(Balance.2014)) +
+    geom_density() +
+    theme(axis.line = element_line(colour = "black"),
+          panel.grid.major = element_blank(),
+          panel.grid.minor = element_blank(),
+          panel.border = element_blank(),
+          panel.background = element_blank()) +
+  #  geom_vline(xintercept = c(-29000, -4700))
+  #  geom_vline(xintercept = c(-36750, -9300.0))
+    geom_vline(xintercept = c(-29000, -9300.0),linetype="dashed") #, color = "e44f2f")
+# 25%
+
+quantile(v.avance$Balance.2014, na.rm = T, c(1:20)/20)
+
+# 30% entre -29000 et -4700
 
 

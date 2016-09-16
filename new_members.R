@@ -54,3 +54,5 @@ summary(d04.household %>%
           group_by(id.interview) %>%
           summarise(n = n()))
 # med = 5, moyenne = 4.689
+
+(4.689+.94)/4.689

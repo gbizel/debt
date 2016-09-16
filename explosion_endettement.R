@@ -97,6 +97,13 @@ d.borrow.assets %>%
 #  geom_vline(data=d.borrow.assets.mean, aes(xintercept=mean,  colour=date),
                linetype="dashed", size=1)
 
+
+## SLIDES::::::
+
+length(which((d.borrow.assets %>% filter(date =="2014"))$ratio > 2))/nrow(d.borrow.assets)
+length(which((d.borrow.assets %>% filter(date =="2004"))$ratio > 2))/nrow(d.borrow.assets)
+
+
 ## PREMIER DECILE
 
 quantile( ( d.borrow.assets %>% filter(date == "2004") )$assets.value,
@@ -552,5 +559,7 @@ d.avance %>%
   geom_density( alpha = 0.5, adjust = 1)
 
 summary(d04.avance$Balance)
+
+
 
 

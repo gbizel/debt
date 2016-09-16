@@ -118,6 +118,13 @@ estimation.real <-
   as.double(
   r.main$X6.2.AD.Principal.Amount.Repaid + r.main$days*(r.main$day.interest) )
 
+
+qplot(
+  r.main$days[i.calculable],
+  estimation.real[i.calculable],
+  colour = freq ) + 
+  geom_smooth(method = lm)
+
 q_plot(estimation.real)
 
 est.interest <-   r.main$days*(r.main$day.interest)

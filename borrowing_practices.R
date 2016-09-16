@@ -225,3 +225,101 @@ write.csv2(r.practices %>%
            sep = ";")
 
 
+
+## SLIDES what part is from maistry ------------
+
+names(d04.practices)
+
+inner_join(
+d14.practices %>%
+  group_by(id.interview, lender) %>%
+  summarize(out = sum(outstanding)) %>%
+  filter(lender == "maistry") %>%
+  summarize(out.maistri = sum(out))
+,
+d14.practices %>%
+  group_by(id.interview) %>%
+  summarise(out.full = sum(outstanding))
+,
+by = "id.interview") %>%
+  mutate( pct = out.maistri/out.full) %>%
+  summarise(mean(pct), median(pct))
+
+# part du maistri
+# mean = 0.2593417
+# median = 0.2209302
+
+d04.practices %>%
+  group_by(lender) %>%
+  summarise(mean(outstanding)/14854.93)
+
+d04.practices %>%
+  group_by(id.interview) %>%
+  summarise(sum.id = sum(outstanding)) %>%
+  summarise(mean(sum.id, na.rm = T))
+
+
+
+names(v.sources)
+
+inner_join(
+  v.sources %>%
+    group_by(id.interview, lender) %>%
+    summarize(out = sum(outstanding)) %>%
+    filter(lender == "maistry") %>%
+    summarize(out.maistri = sum(out))
+  ,
+  v.sources %>%
+    group_by(id.interview) %>%
+    summarise(out.full = sum(outstanding))
+  ,
+  by = "id.interview") %>%
+  mutate( pct = out.maistri/out.full) %>%
+  summarise(mean(pct), median(pct))
+
+
+
+
+# Etude descriptive SLIDE REPRISE -----------
+
+
+d04.practices %>%
+  group_by(lender) %>%
+  summarise(sum(outstanding, na.rm = T)/41024.61)
+
+# 1  Relative/friends                           3.71667153
+# 2    Wealthy people                          16.98151427
+# 3     money lenders                           8.75876699
+# 4           maistry                          44.58055787
+# 5        snopkeeper                           0.46313664
+# 6      grocery shop                           2.41077246
+# 7       pawnbrocker                          18.41699409
+# 8               SHG                           0.05362635
+# 9              bank                           3.82575240
+# 10            other                           0.79220741
+
+names(v.sources)
+
+v.sources %>%
+  summarise(sum(outstanding, na.rm = T))
+
+
+v.sources %>%
+  group_by(from.code) %>%
+  summarise(sum(outstanding, na.rm = T)/385632)
+
+# from.code sum(outstanding, na.rm = T)/385632
+# (fctr)                              (dbl)
+# 1          1                         17.1688294
+# 2         10                          0.3604473
+# 3          2                         12.5225604
+# 4          3                         12.1663918
+# 5         3A                          2.4824185
+# 6          4                         22.7035101
+# 7          5                          7.4138038
+# 8          6                          8.4565078
+# 9          7                         15.0127583
+# 10         8                          0.4278691
+# 11         9                          1.2849037
+d14.practices %>%
+  summarise(sum(outstanding, na.rm = T))
