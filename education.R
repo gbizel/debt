@@ -130,6 +130,12 @@ edu.csv <-
 
 write.csv2(edu.csv, dec = ";", file = "/Users/gaston/Desktop/ifp/r.edu.csv")
 
+edu.low.caste.csv <-
+  r.fam.gen %>%
+  filter(X1.6.b.Caste.Code == 1)
+
+write.csv2(edu.low.caste.csv, dec = ";", file = "/Users/gaston/Desktop/ifp/r.edu.low.csv")
+
 
 names(d04.household)
 
@@ -138,6 +144,47 @@ d.edu.csv <-
   select(age, education)
   
 write.csv2(d.edu.csv, dec = ";", file = "/Users/gaston/Desktop/ifp/d.edu.csv")
+
+
+# Rume SC ------------------
+
+names(r.family)
+names(r.general)
+
+r.fam.gen <-
+  inner_join(r.family, r.general, by = "Code.family")
+
+length((r.fam.gen %>%
+             filter(X1.6.b.Caste.Code == 1))$X1.G.Education)
+
+nrow((r.fam.gen %>%
+          filter(X1.6.b.Caste.Code == 1,
+                 X1.G.Education != 66)))
+
+
+
+summary(
+as.factor((r.fam.gen %>%
+  filter(X1.6.b.Caste.Code == 1))$X1.G.Education))/8.68
+
+r.fam.gen %>%
+  filter(X1.6.b.Caste.Code == 1,
+         X1.G.Education == 9) %>%
+  group_by(X1.6.b.Caste) %>%
+  summarize(n())
+
+r.fam.gen %>%
+  filter(X1.6.b.Caste.Code == 1) %>%
+  group_by(X1.6.b.Caste) %>%
+  summarize(n())
+
+summary(as.factor(r.fam.gen$X1.6.b.Caste))
+
+
+#no education 24.6100520
+#primary 20.7972270
+#
+
 
 #2014
 

@@ -594,3 +594,85 @@ r.main %>%
   geom_vline(xintercept = -30*4)
 
 4*30
+
+
+
+### Derniers regalges: reg dureee/ montant ------
+
+names(r.main)
+
+r.main %>%
+  filter(X6.2.AB.Frequency == 1) %>%
+  select(duration, X6.1.I.Amount.of.loan) %>%
+  ggplot(aes(duration, X6.1.I.Amount.of.loan)) +
+  geom_point()
+
+
+
+#### Identification ---------------
+
+
+names(r.loan.income)
+nrow(r.loan.income)
+
+r.loan.income$family.income
+
+names(r.total.loan)
+nrow(r.total.loan)
+
+quantile(r.total.loan$part_of_income, c(0:10)/10)
+
+summary(
+r.total.loan %>%
+  filter(part_of_income > 0.27125410))
+
+summary(r.total.loan)
+# pas de resultat significatif
+
+
+quantile(r.total.loan$part_of_income*r.total.loan$total.loan, c(0:10)/10)
+
+summary(
+  r.total.loan %>%
+    filter(part_of_income*total.loan > 30273.612))
+## 33/81 Vaniyars
+
+nrow(r.total.loan)
+## 123/405
+
+r.total.loan$X1.6.b.Caste =
+  as.factor(r.total.loan$X1.6.b.Caste)
+
+###
+
+quantile(r.total.loan$part_of_income*r.total.loan$family.income.total.loan, c(0:10)/10)
+## 80%: 0.6154541
+
+summary(
+  r.total.loan %>%
+    filter(part_of_income*family.income.total.loan > 0.6154541))
+## 30/81
+
+
+
+# Vaniyars:
+
+summary(
+r.total.loan %>%
+  filter( X1.6.b.Caste == 1)
+)[3:4,]
+
+summary(r.total.loan)[3:4,]
+
+summary(
+  r.total.loan %>%
+    filter( X1.6.b.Caste == 2)
+)[3:4,]
+
+
+
+r.total.loan %>%
+  filter(X1.6.b.Caste %in% c(1,2)) %>%
+  ggplot(aes(x= as.numeric(amount), fill = X1.6.b.Caste)) +
+  geom_density(alpha=.5, position="dodge")
+  
